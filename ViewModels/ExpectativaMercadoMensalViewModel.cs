@@ -1,6 +1,8 @@
 ﻿using Polo_Projeto_WPF.Models;
+using Polo_Projeto_WPF.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 
 namespace Polo_Projeto_WPF.ViewModels
@@ -12,7 +14,8 @@ namespace Polo_Projeto_WPF.ViewModels
         public ObservableCollection<string> IndicadoresSelect { get; }
         public ObservableCollection<ExpectativaMercadoMensal> Expectativa { get; set; }
 
-        
+        public ICommand BuscarExpectativas { get; set; }
+
         private string _cmbIndicador;
         public string CmbIndicador
         {
@@ -53,6 +56,14 @@ namespace Polo_Projeto_WPF.ViewModels
         {
 
            IndicadoresSelect = new ObservableCollection<string> { "IPCA", "Câmbio", "Selic" };
+           
+           BuscarExpectativas = new RelayCommand(ObterIndicadoresFiltroComData);
+
+        }
+
+        public async void ObterIndicadoresFiltroComData(object obj)
+        {
+            //Buscar Dados Na API e popular o DataGrid
 
         }
 
