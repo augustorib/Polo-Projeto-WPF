@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Polo_Projeto_WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel Background="DarkGray">
+        
+        <Frame x:Name="main" NavigationUIVisibility="Hidden">
 
-    </Grid>
+        </Frame>
+    </StackPanel>
 </Window>
