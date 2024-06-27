@@ -23,7 +23,7 @@
                 <Label Content="Selecione a data Final: "/>
                 <DatePicker SelectedDate="{Binding DtpDataFinal}" />
 
-                <Button Content="Buscar" Command="{Binding BuscarFiltroComData}" Width="100" Height="30" Margin="0. 20, 10, 10" RenderTransformOrigin="0.6, 0.55"/>
+                <Button Content="Buscar" Command="{Binding BuscarExpectativas}" Width="100" Height="30" Margin="0. 20, 10, 10" RenderTransformOrigin="0.6, 0.55"/>
 
             </StackPanel>
 
@@ -31,7 +31,7 @@
             <StackPanel>
                 
                 <Label Content="Expectativas do Mercado Mensal" Margin="10" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
-                <DataGrid x:Name="dgrIndicadores" ItemsSource="{Binding Expectativa}" HorizontalAlignment="Center" Height="147" Width="744" RenderTransformOrigin="0.5,0.5"/>
+                <DataGrid x:Name="dgrIndicadores" ItemsSource="{Binding Expectativas}" HorizontalAlignment="Center" Height="147" Width="744" RenderTransformOrigin="0.5,0.5"/>
                 
             </StackPanel>
             

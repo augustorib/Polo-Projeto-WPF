@@ -11,8 +11,9 @@ namespace Polo_Projeto_WPF.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private readonly BacenApiClient _bacenApiClient;
         public ObservableCollection<string> IndicadoresSelect { get; }
-        public ObservableCollection<ExpectativaMercadoMensal> Expectativa { get; set; }
+        public ObservableCollection<ExpectativaMercadoMensal> Expectativas { get; set; }
 
         public ICommand BuscarExpectativas { get; set; }
 
@@ -55,15 +56,22 @@ namespace Polo_Projeto_WPF.ViewModels
         public ExpectativaMercadoMensalViewModel()
         {
 
+           _bacenApiClient = new BacenApiClient();
+
            IndicadoresSelect = new ObservableCollection<string> { "IPCA", "Câmbio", "Selic" };
            
            BuscarExpectativas = new RelayCommand(ObterIndicadoresFiltroComData);
 
         }
 
+
         public async void ObterIndicadoresFiltroComData(object obj)
         {
-            //Buscar Dados Na API e popular o DataGrid
+            var expectativasMercadoMensal = await _bacenApiClient.ObterExpectativasMercadoMensal(CmbIndicador, DtpDataInicial, DtpDataFinal);
+
+            Expectativas = new ObservableCollection<ExpectativaMercadoMensal>(expectativasMercadoMensal.Expectativas);
+
+            NotifyPropertyChanged("Expectativas");
 
         }
 
