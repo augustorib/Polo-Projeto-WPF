@@ -483,6 +483,3 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-#Visual Studio 2022
-*.sln
-*.csproj
