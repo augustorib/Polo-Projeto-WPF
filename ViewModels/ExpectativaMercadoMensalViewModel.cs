@@ -7,6 +7,7 @@ using System.Windows.Input;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using Polo_Projeto_WPF.Data;
 
 
 namespace Polo_Projeto_WPF.ViewModels
@@ -18,6 +19,8 @@ namespace Polo_Projeto_WPF.ViewModels
         private readonly BacenApiClient _bacenApiClient;
 
         private readonly CsvExport _csvExport;
+
+        private readonly PoloDbContext _context;
         public ObservableCollection<string> IndicadoresSelect { get; }
         public ObservableCollection<ExpectativaMercadoMensal> Expectativas { get; set; }
 
@@ -26,6 +29,7 @@ namespace Polo_Projeto_WPF.ViewModels
 
         public ICommand BuscarExpectativas { get; set; }
         public ICommand ExportarCsv { get; set; }
+        public ICommand SalvarNoBd { get; set; }
 
         private string _cmbIndicador;
         public string CmbIndicador
@@ -68,11 +72,13 @@ namespace Polo_Projeto_WPF.ViewModels
 
            _bacenApiClient = new BacenApiClient();
            _csvExport = new CsvExport();
+           _context = new PoloDbContext();
 
            IndicadoresSelect = new ObservableCollection<string> { "IPCA", "Câmbio", "Selic" };
            
            BuscarExpectativas = new RelayCommand(ObterIndicadoresFiltroComData);
            ExportarCsv = new RelayCommand(ExportarParaCSV);
+           SalvarNoBd = new RelayCommand(SalvarExpectativasMercado);
 
         }
 
@@ -97,6 +103,11 @@ namespace Polo_Projeto_WPF.ViewModels
         public async void ExportarParaCSV(object obj)
         {
             await _csvExport.ExportarParaCSV(Expectativas);
+        } 
+
+        public async void SalvarExpectativasMercado(object obj)
+        {
+            await _context.SalvarExpectativasMercado(Expectativas);
         }
 
         private void ConstruirGraficoLinear()
