@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 
 namespace Polo_Projeto_WPF.ViewModels
@@ -19,6 +22,7 @@ namespace Polo_Projeto_WPF.ViewModels
         public ObservableCollection<ExpectativaMercadoMensal> Expectativas { get; set; }
 
         public ICollectionView ExpectativasAgrupado { get; set; }
+        public PlotModel GraficoLinear { get; private set; }
 
         public ICommand BuscarExpectativas { get; set; }
         public ICommand ExportarCsv { get; set; }
@@ -83,6 +87,8 @@ namespace Polo_Projeto_WPF.ViewModels
             ExpectativasAgrupado = CollectionViewSource.GetDefaultView(Expectativas);
             ExpectativasAgrupado.GroupDescriptions.Add(new PropertyGroupDescription("Indicador"));
 
+            ConstruirGraficoLinear();
+
             NotifyPropertyChanged("Expectativas");
             NotifyPropertyChanged("ExpectativasAgrupado");
 
@@ -91,6 +97,47 @@ namespace Polo_Projeto_WPF.ViewModels
         public async void ExportarParaCSV(object obj)
         {
             await _csvExport.ExportarParaCSV(Expectativas);
+        }
+
+        private void ConstruirGraficoLinear()
+        {
+            GraficoLinear = new PlotModel { Title = "Gráfico Linear " + Expectativas[0].Indicador };
+
+            // Criação dos eixos
+            var X = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Title = "Mínimo"
+            };
+
+            var Y = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Máximo"
+            };
+
+            GraficoLinear.Axes.Add(X);
+            GraficoLinear.Axes.Add(Y);
+
+            // Criação da série de dados
+            var lineSeries = new LineSeries
+            {
+                Title = "Mínimo x Máximo ao Longo do Tempo",
+                MarkerType = MarkerType.Circle
+
+            };
+
+            // Dados para o gráfico
+            var data = Expectativas;
+
+            // Adicionando pontos à série
+            foreach (var item in data)
+            {
+                lineSeries.Points.Add(new DataPoint(item.Minimo, item.Maximo));
+            }
+
+            GraficoLinear.Series.Add(lineSeries);
+            NotifyPropertyChanged("GraficoLinear");
         }
 
         public void NotifyPropertyChanged(string? propertyName = null)
