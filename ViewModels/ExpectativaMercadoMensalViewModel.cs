@@ -12,10 +12,13 @@ namespace Polo_Projeto_WPF.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly BacenApiClient _bacenApiClient;
+
+        private readonly CsvExport _csvExport;
         public ObservableCollection<string> IndicadoresSelect { get; }
         public ObservableCollection<ExpectativaMercadoMensal> Expectativas { get; set; }
 
         public ICommand BuscarExpectativas { get; set; }
+        public ICommand ExportarCsv { get; set; }
 
         private string _cmbIndicador;
         public string CmbIndicador
@@ -57,10 +60,12 @@ namespace Polo_Projeto_WPF.ViewModels
         {
 
            _bacenApiClient = new BacenApiClient();
+           _csvExport = new CsvExport();
 
            IndicadoresSelect = new ObservableCollection<string> { "IPCA", "Câmbio", "Selic" };
            
            BuscarExpectativas = new RelayCommand(ObterIndicadoresFiltroComData);
+           ExportarCsv = new RelayCommand(ExportarParaCSV);
 
         }
 
@@ -75,6 +80,10 @@ namespace Polo_Projeto_WPF.ViewModels
 
         }
 
+        public async void ExportarParaCSV(object obj)
+        {
+            await _csvExport.ExportarParaCSV(Expectativas);
+        }
 
         public void NotifyPropertyChanged(string? propertyName = null)
         {
