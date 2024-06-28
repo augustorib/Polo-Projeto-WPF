@@ -21,8 +21,10 @@ namespace Polo_Projeto_WPF.Models
 
         public double Maximo { get; set; }
 
+        [JsonPropertyName("numeroRespondentes")]
         public int NumeroRespondentes { get; set; }
 
+        [JsonPropertyName("baseCalculo")]
         public int BaseCalculo { get; set; }
     }
 }
