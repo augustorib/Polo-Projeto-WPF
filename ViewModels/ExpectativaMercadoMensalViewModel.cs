@@ -2,6 +2,7 @@
 using Polo_Projeto_WPF.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Data;
 using System.Windows.Input;
 
 
@@ -16,6 +17,8 @@ namespace Polo_Projeto_WPF.ViewModels
         private readonly CsvExport _csvExport;
         public ObservableCollection<string> IndicadoresSelect { get; }
         public ObservableCollection<ExpectativaMercadoMensal> Expectativas { get; set; }
+
+        public ICollectionView ExpectativasAgrupado { get; set; }
 
         public ICommand BuscarExpectativas { get; set; }
         public ICommand ExportarCsv { get; set; }
@@ -76,7 +79,12 @@ namespace Polo_Projeto_WPF.ViewModels
 
             Expectativas = new ObservableCollection<ExpectativaMercadoMensal>(expectativasMercadoMensal.Expectativas);
 
+            //Agrupamento da tabela
+            ExpectativasAgrupado = CollectionViewSource.GetDefaultView(Expectativas);
+            ExpectativasAgrupado.GroupDescriptions.Add(new PropertyGroupDescription("Indicador"));
+
             NotifyPropertyChanged("Expectativas");
+            NotifyPropertyChanged("ExpectativasAgrupado");
 
         }
 

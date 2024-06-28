@@ -31,8 +31,23 @@
             <StackPanel>
                 
                 <Label Content="Expectativas do Mercado Mensal" Margin="10" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"/>
-                <DataGrid x:Name="dgrIndicadores" ItemsSource="{Binding Expectativas}" HorizontalAlignment="Center" Height="147" Width="744" RenderTransformOrigin="0.5,0.5" AutoGenerateColumns="False" IsReadOnly="True">
-                    
+                <DataGrid x:Name="dgrIndicadores" ItemsSource="{Binding ExpectativasAgrupado}" HorizontalAlignment="Center" Height="147" Width="744" RenderTransformOrigin="0.5,0.5" AutoGenerateColumns="False" IsReadOnly="True">
+
+                    <DataGrid.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Expander IsExpanded="False">
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+                                        </Expander.Header>
+                                        <ItemsPresenter  Visibility="Collapsed"/>
+                                    </Expander>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </DataGrid.GroupStyle>
+
                     <DataGrid.Columns>
                         
                         <DataGridTextColumn Header="Indicador" Binding="{Binding Indicador}" />
